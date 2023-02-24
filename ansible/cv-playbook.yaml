@@ -1,0 +1,58 @@
+- name: Configure static CV webserver
+  hosts: cv_static_server
+  remote_user: ubuntu
+  become: yes
+
+  tasks:
+  - name: Install NGINX
+    apt:
+      name: nginx
+      state: present
+      update_cache: true
+
+  - name: Disable UFW # we already have AWS NACL and SGs, so this is not necessary
+    community.general.ufw:
+      state: disabled
+
+  - name: Enable NGINX service
+    systemd:
+      name: nginx
+      enabled: true
+
+  - name: Delete exisiting .html files
+    file:
+      state: absent
+      path: /var/www/html/
+
+  - name: Copy static web files to remote
+    copy:
+      src: /home/ogcamplin/learning/oscar-static-cv/static-cv/
+      dest: /var/www/html
+
+  - name: Remove default site
+    file: 
+      state: absent
+      path: /etc/nginx/sites-available/default
+
+  - name: Copy nginx config to remote
+    copy: 
+      src: /home/ogcamplin/learning/oscar-static-cv/nginx/nginx.conf
+      dest: /etc/nginx/
+
+  - name: Add new CV sites
+    copy: 
+      src: /home/ogcamplin/learning/oscar-static-cv/nginx/static-cv
+      dest: /etc/nginx/sites-available/
+
+  - name: Symlink CV site to enabled sites
+    file: 
+      src: /etc/nginx/sites-available/static-cv
+      dest: /etc/nginx/sites-enabled/static-cv
+      state: link
+    
+  - name: Reload NGINX service
+    systemd:
+      name: nginx
+      state: restarted
+  
+

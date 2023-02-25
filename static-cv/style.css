@@ -32,7 +32,7 @@ header, main, footer {
 header {
   padding: 2em;
   text-align: center;
-  background-image: url('./img/bg.jpg');
+  background-color: #20349F;
   background-size: cover;
   background-position: fixed;
   color: white;
@@ -53,7 +53,7 @@ h1 {
   margin: 1em 0;
 }
 
-h3 {
+h2 {
   text-transform: uppercase;
 }
 
@@ -109,13 +109,17 @@ a .fab {
 }
 
 .skills .column {
-  -ms-flex: 0 0 50%%;
+  -ms-flex: 0 0 50%;
   flex: 0 0 50%;
   max-width: 50%;
 }
 
 .skills .column ul, ul.job-description {
   list-style-type: none;
+}
+
+.job-description {
+  padding-left: 1em;
 }
 
 .skills .column ul > li:before {
@@ -126,6 +130,36 @@ a .fab {
 
 .school, .job-title {
   text-transform: capitalize;
+}
+
+.job-title {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.job-title h3 {
+  padding: 0;
+  margin: 0px 0px 0px 0px;
+  width: 50%
+}
+
+.job-title h4 {
+  padding: 0;
+  margin: 0;
+  color: #717b80;
+}
+
+.job-title span {
+  text-align: right;
+}
+
+p {
+  margin: 0
+}
+
+.job-title span {
+  width: 50%;
 }
 
 .school span, .job-title span {

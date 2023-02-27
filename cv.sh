@@ -31,5 +31,3 @@ then
 else
     echo "Please provide arg (apply or destroy)"
 fi
-
-

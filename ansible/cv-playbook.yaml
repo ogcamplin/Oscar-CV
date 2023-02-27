@@ -26,22 +26,27 @@
 
   - name: Copy static web files to remote
     copy:
-      src: /home/ogcamplin/learning/oscar-static-cv/static-cv/
+      src: ../static-cv/
       dest: /var/www/html
 
-  - name: Remove default site
+  - name: Remove default site available
     file: 
       state: absent
       path: /etc/nginx/sites-available/default
 
+  - name: Remove default site enabled
+    file: 
+      state: absent
+      path: /etc/nginx/sites-enabled/default
+
   - name: Copy nginx config to remote
     copy: 
-      src: /home/ogcamplin/learning/oscar-static-cv/nginx/nginx.conf
+      src: ../nginx/nginx.conf
       dest: /etc/nginx/
 
   - name: Add new CV sites
     copy: 
-      src: /home/ogcamplin/learning/oscar-static-cv/nginx/static-cv
+      src: ../nginx/static-cv
       dest: /etc/nginx/sites-available/
 
   - name: Symlink CV site to enabled sites
@@ -49,6 +54,34 @@
       src: /etc/nginx/sites-available/static-cv
       dest: /etc/nginx/sites-enabled/static-cv
       state: link
+
+
+  # #### Certbot config
+  # - name: Install snapd
+  #   apt:
+  #     name: snapd
+  #     state: present
+
+  # - name: Ensure snapd is up to date
+  #   community.general.snap:
+  #     name: core 
+  #     state: present
+  
+  # - name: Install certbot
+  #   community.general.snap:
+  #     name: certbot  
+  #     state: present
+  #     classic: true
+
+  # - name: Prepare certbot command
+  #   file: 
+  #     src: /snap/bin/certbot
+  #     dest: /usr/bin/certbot
+  #     state: link
+
+  # - name: Get and install certificate
+  #   ansible.builtin.command:
+  #     cmd: certbot --nginx
     
   - name: Reload NGINX service
     systemd:

@@ -27,12 +27,12 @@ data "aws_security_group" "cv_sec_group" {
   }
 }
 
-data "aws_eip" "cv_eip" {
-  filter {
-    name = "tag:Name"
-    values = ["cv_eip"]
-  }
-}
+# data "aws_eip" "cv_eip" {
+#   filter {
+#     name = "tag:Name"
+#     values = ["cv_eip"]
+#   }
+# }
 
 resource "aws_network_interface" "cv_eni" {
   subnet_id = data.aws_subnet.cv_subnet.id
@@ -55,10 +55,10 @@ resource "local_file" "ssh_key" {
     file_permission = 400
 }
 
-resource "aws_eip_association" "aws_eip_association" {
-  allocation_id = data.aws_eip.cv_eip.id
-  instance_id = aws_instance.cv_nginx_instance.id
-}
+# resource "aws_eip_association" "aws_eip_association" {
+#   allocation_id = data.aws_eip.cv_eip.id
+#   instance_id = aws_instance.cv_nginx_instance.id
+# }
 
 resource "aws_instance" "cv_nginx_instance" {
   ami = "ami-08f0bc76ca5236b20"
@@ -68,4 +68,12 @@ resource "aws_instance" "cv_nginx_instance" {
     device_index = 0
     network_interface_id = aws_network_interface.cv_eni.id
   }
+}
+
+resource "local_file" "hosts_cfg" {
+  content = templatefile("hosts.tpl", 
+  {
+    cv_static_server_ip = aws_instance.cv_nginx_instance.public_ip
+  })
+  filename = "../../ansible/inventory"
 }

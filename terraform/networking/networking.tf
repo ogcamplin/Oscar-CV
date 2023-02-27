@@ -44,13 +44,13 @@ resource "aws_route_table" "cv_route_table" {
   }
 } 
 
-resource "aws_eip" "cv_eip" {
-  vpc = true
+# resource "aws_eip" "cv_eip" {
+#   vpc = true
 
-  tags = {
-    Name = "cv_eip"
-  }
-}
+#   tags = {
+#     Name = "cv_eip"
+#   }
+# }
 
 resource "aws_route_table_association" "cv_rta_subnet" {
   subnet_id = aws_subnet.cv_subnet.id
@@ -82,12 +82,12 @@ resource "aws_security_group" "cv_sec_group" {
     to_port = 443
   }
 
-  ingress {
-    cidr_blocks = ["0.0.0.0/0"]
-    protocol = "tcp"
-    from_port = 53
-    to_port = 53
-  }
+  # ingress {
+  #   cidr_blocks = ["0.0.0.0/0"]
+  #   protocol = "tcp"
+  #   from_port = 53
+  #   to_port = 53
+  # }
 
   ingress {
     cidr_blocks = ["0.0.0.0/0"]
@@ -140,14 +140,14 @@ resource "aws_network_acl" "cv_nacl" {
     action = "allow"
   }
 
-  ingress {
-    rule_no = 4
-    from_port = 53
-    to_port = 53
-    protocol = "tcp"
-    cidr_block = "0.0.0.0/0"
-    action = "allow"
-  }
+  # ingress {
+  #   rule_no = 4
+  #   from_port = 53
+  #   to_port = 53
+  #   protocol = "tcp"
+  #   cidr_block = "0.0.0.0/0"
+  #   action = "allow"
+  # }
 
   ingress {
     rule_no = 5
@@ -196,14 +196,14 @@ resource "aws_network_acl" "cv_nacl" {
     action = "allow"
   }
 
-  egress {
-    rule_no = 4
-    from_port = 53
-    to_port = 53
-    protocol = "tcp"
-    cidr_block = "0.0.0.0/0"
-    action = "allow"
-  }
+  # egress {
+  #   rule_no = 4
+  #   from_port = 53
+  #   to_port = 53
+  #   protocol = "tcp"
+  #   cidr_block = "0.0.0.0/0"
+  #   action = "allow"
+  # }
 
   egress {
     rule_no = 5

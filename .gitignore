@@ -2,3 +2,4 @@
 *.tfstate*
 outfile
 *.pem
+inventory
